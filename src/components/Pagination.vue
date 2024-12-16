@@ -6,6 +6,7 @@ const route = useRoute()
 const router = useRouter()
 const props = defineProps(['pagination'])
 
+console.log('pagination >>>', props.pagination)
 // Méthode pour changer de page
 const changePage = (num) => {
   const queries = { ...route.query }

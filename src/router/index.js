@@ -5,6 +5,7 @@ import HomeView from '../views/HomeView.vue'
 import OfferView from '../views/OfferView.vue'
 import SignupView from '../views/SignupView.vue'
 import LoginView from '../views/LoginView.vue'
+import PublishView from '../views/PublishView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 
 // create routes
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
+    },
+    {
+      path: '/publish',
+      name: 'publish',
+      component: PublishView,
     },
     {
       path: '/:catchAll(.*)',
