@@ -13,7 +13,7 @@ import { onMounted, ref, watchEffect } from 'vue'
 const offersList = ref({})
 
 // props
-const props = defineProps(['page', 'title', 'sort', 'priceMin', 'priceMax'])
+const props = defineProps(['page', 'title', 'sort', 'pricemin', 'pricemax'])
 // console.log(props)
 // trigger get offers onMouted event
 onMounted(async () => {
@@ -30,7 +30,7 @@ onMounted(async () => {
       }
 
       const { data } = await axios.get(
-        `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers?populate[0]=pictures&populate[1]=owner.avatar&filters[title][$containsi]=${props.title}${pricefilters}&pagination[page]=${props.page}&pagination[pageSize]=10&sort=${props.sort}`,
+        `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers?populate[0]=pictures&populate[1]=owner.avatar`,
       )
 
       // Pour vérifer les informations reçues
@@ -53,7 +53,7 @@ onMounted(async () => {
       <!-- Conditional Headline -->
       <div v-else>
         <!-- Filters  -->
-        <Filters :sort="sort" :priceMin="priceMin" :priceMax="priceMax" />
+        <Filters :sort="sort" :pricemin="pricemin" :pricepax="pricemax" />
         <p class="my-4 text-center text-2xl font-bold">Des millions de petites annonces et autant d’occasions de se faire plaisir</p>
       </div>
 
