@@ -1,6 +1,9 @@
 <script setup>
 import { RouterLink, useRoute, useRouter } from 'vue-router'
-import { inject, ref } from 'vue'
+import { inject } from 'vue'
+
+import BtnPublisherOffer from './BtnPublisherOffer.vue'
+import SearchByTitle from './SearchByTitle.vue'
 
 const GlobalStore = inject('GlobalStore')
 
@@ -11,52 +14,51 @@ const disconnectUser = () => {
   $cookies.remove('userInfos')
 }
 
-const search = ref('')
 const route = useRoute()
 const router = useRouter()
 
-const handleSubmit = () => {
+const handleSearch = (searchText) => {
+  console.log('searchText>>', searchText)
   const queries = { ...route.query }
 
-  if (search.value) {
-    queries.title = search.value
+  if (searchText) {
+    queries.title = searchText
   } else {
     delete queries.title
   }
-  // add page 1
+
+  queries.page = 1
 
   router.push({ name: 'home', query: queries })
+}
+
+const whenBecomeEmpty = (value) => {
+  if (value === '') {
+    // Copie des query existantes pour pouvoir les modifier
+    const queries = { ...route.query }
+
+    // Suppression de la query 'title'
+    delete queries.title
+
+    // On navigue vers la route actuelle avec les query mises à jour
+    router.push({ name: 'home', query: queries })
+  }
 }
 </script>
 <template>
   <header class="fixed left-0 top-0 z-10 h-[110px] w-full border-b-2 bg-white">
     <!-- Header container -->
-    <div class="mx- mx-auto flex max-w-[1050px] flex-col justify-between pb-5 pt-5">
+    <div class="mx-auto flex max-w-[1050px] flex-col justify-between pb-5 pt-5">
       <!-- Top bloc -->
       <div class="flex items-center justify-between">
         <RouterLink to="/"><img src="../assets/svg/logo.svg" alt="" class="w-[140px]" /></RouterLink>
         <!-- Top : Middle Part -->
         <div class="flex gap-5">
           <div>
-            <button class="rounded-xl bg-lbc_orange px-4 py-2 font-bold">
-              <font-awesome-icon :icon="['fas', 'plus']" class="mx-1 border-2 p-[1px] text-lg font-bold text-white" />
-              <span class="text-lg text-white">Déposer une annonce</span>
-            </button>
+            <BtnPublisherOffer />
           </div>
           <div>
-            <form @submit.prevent="handleSubmit" class="flex rounded-lg bg-lbc_grey_light">
-              <input
-                v-model="search"
-                type="text"
-                placeholder="Recherche sur leboncoin"
-                class="w-72 rounded-lg bg-transparent pl-2 text-lg placeholder-gray-500"
-              />
-              <button class="bg-none p-2">
-                <span class="rounded-lg bg-lbc_orange p-2">
-                  <font-awesome-icon :icon="['fas', 'search']" class="text-sm font-thin" />
-                </span>
-              </button>
-            </form>
+            <SearchByTitle v-on:handleSearch="handleSearch" v-on:whenBecomeEmpty="whenBecomeEmpty" />
           </div>
         </div>
         <!-- Top : Right part -->

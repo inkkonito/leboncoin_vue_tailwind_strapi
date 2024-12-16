@@ -15,13 +15,13 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      props: (route) => {
-        return {
-          sort: route.query.sort || '',
-          priceMin: Number(route.query.priceMin) || '',
-          priceMax: Number(route.query.priceMax) || '',
-        }
-      },
+      props: (route) => ({
+        title: route.query.title || '',
+        page: parseInt(route.query.page) || 1,
+        sort: route.query.sort || '',
+        pricemin: Number(route.query.pricemin) || '',
+        pricemax: Number(route.query.pricemax) || '',
+      }),
     },
     {
       path: '/offer/:id', // use param to scope on offer

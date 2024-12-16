@@ -38,9 +38,14 @@ library.add(
 const app = createApp(App)
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(router)
-app.use(vueCookies)
+app.use(vueCookies, { expires: '7d', secure: 'true', sameSite: 'Lax' })
 
-const userInfos = ref($cookies.get('userInfos') || null)
+const userInfos = ref(
+  $cookies.get('userInfos') || {
+    username: '',
+    token: '',
+  },
+)
 
 const changeUserInfos = (infos) => {
   userInfos.value = infos

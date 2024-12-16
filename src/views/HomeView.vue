@@ -1,20 +1,20 @@
 <script setup>
-// import components
-import TimeToSell from '../components/TimeToSell.vue'
-import OfferCard from '../components/OfferCard.vue'
-import Filters from '@/components/Filters.vue'
-import Pagination from '@/components/Pagination.vue'
-
 // import libs
 import axios from 'axios'
 import { onMounted, ref, watchEffect } from 'vue'
+
+// import components
+import TimeToSell from '../components/TimeToSell.vue'
+import OfferCard from '../components/OfferCard.vue'
+import Filters from '../components/Filters.vue'
+import Pagination from '../components/Pagination.vue'
 
 // init reactive variable to store offers
 const offersList = ref({})
 
 // props
 const props = defineProps(['page', 'title', 'sort', 'pricemin', 'pricemax'])
-// console.log(props)
+console.log(props)
 // trigger get offers onMouted event
 onMounted(async () => {
   watchEffect(async () => {
@@ -30,11 +30,11 @@ onMounted(async () => {
       }
 
       const { data } = await axios.get(
-        `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers?populate[0]=pictures&populate[1]=owner.avatar`,
+        `https://site--strapileboncoin--2m8zk47gvydr.code.run/api/offers?populate[0]=pictures&populate[1]=owner.avatar&filters[title][$containsi]=${props.title}${pricefilters}&pagination[page]=${props.page}&pagination[pageSize]=10&sort=${props.sort}`,
       )
 
       // Pour vérifer les informations reçues
-      console.log('HomeView - data >>>', data)
+      console.log('HomeView - data- >>>', data)
 
       offersList.value = data
     } catch (error) {
@@ -53,7 +53,7 @@ onMounted(async () => {
       <!-- Conditional Headline -->
       <div v-else>
         <!-- Filters  -->
-        <Filters :sort="sort" :pricemin="pricemin" :pricepax="pricemax" />
+        <Filters :sort="sort" :pricemin="pricemin" :pricemax="pricemax" />
         <p class="my-4 text-center text-2xl font-bold">Des millions de petites annonces et autant d’occasions de se faire plaisir</p>
       </div>
 
@@ -72,7 +72,7 @@ onMounted(async () => {
         ></OfferCard>
       </div>
     </div>
-    <Pagination />
+    <Pagination v-if="offersList.meta?.pagination" :pagination="offersList.meta.pagination" />
   </div>
 </template>
 <style scoped></style>

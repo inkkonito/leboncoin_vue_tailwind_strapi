@@ -87,11 +87,11 @@ const handleSubmit = () => {
         <div class="flex flex-1 items-center">
           <label class="mr-[15px]">
             Prix croissants
-            <input type="radio" value="price:asc" id="priceAsc" />
+            <input type="radio" value="price:asc" id="priceAsc" v-model="sort" />
           </label>
           <label class="mr-[15px]">
             Prix décroissants
-            <input type="radio" value="price:desc" id="priceDesc" />
+            <input type="radio" value="price:desc" id="priceDesc" v-model="sort" />
           </label>
           <label class="mr-[15px]">
             Pas de tri
