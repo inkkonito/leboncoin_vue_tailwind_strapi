@@ -10,8 +10,9 @@ const GlobalStore = inject('GlobalStore')
 // console.log(GlobalStore.userInfos)
 
 const disconnectUser = () => {
-  GlobalStore.changeUserInfos(null)
+  GlobalStore.changeUserInfos({ username: '', token: '' })
   $cookies.remove('userInfos')
+  router.push({ name: 'home' })
 }
 
 const route = useRoute()
@@ -68,7 +69,9 @@ const whenBecomeEmpty = (value) => {
         >
           <div class="flex flex-col items-center justify-center">
             <font-awesome-icon :icon="['far', 'user']" />
-            <p class="text-[12px]">{{ GlobalStore.userInfos.value.username }}</p>
+            <RouterLink :to="{ name: 'profile' }">
+              <p class="text-[12px]">{{ GlobalStore.userInfos.value.username }}</p>
+            </RouterLink>
           </div>
           <div>
             <font-awesome-icon :icon="['fas', 'arrow-right']" @click="disconnectUser" class="cursor-pointer text-lbc_grey" />

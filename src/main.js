@@ -16,6 +16,7 @@ import {
   faLocationArrow,
   faCheckDouble,
   faArrowRight,
+  faCamera,
 } from '@fortawesome/free-solid-svg-icons'
 import { faUser, faHeart, faClock, faEyeSlash, faEye } from '@fortawesome/free-regular-svg-icons'
 
@@ -33,6 +34,7 @@ library.add(
   faEyeSlash,
   faArrowRight,
   faEye,
+  faCamera,
 )
 
 const app = createApp(App)
@@ -46,7 +48,7 @@ const userInfos = ref(
     token: '',
   },
 )
-
+console.log('userInfos>>>', userInfos.value)
 const changeUserInfos = (infos) => {
   userInfos.value = infos
 }

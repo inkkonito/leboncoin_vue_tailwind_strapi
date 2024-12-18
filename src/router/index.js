@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { inject } from 'vue'
 
 // import components used for routing
 import HomeView from '../views/HomeView.vue'
 import OfferView from '../views/OfferView.vue'
 import SignupView from '../views/SignupView.vue'
 import LoginView from '../views/LoginView.vue'
-import PublishView from '../views/PublishView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 
 // create routes
 const router = createRouter({
@@ -43,7 +44,15 @@ const router = createRouter({
     {
       path: '/publish',
       name: 'publish',
-      component: PublishView,
+      component: () => import('../views/PublishView.vue'),
+      meta: {
+        requireAuth: true,
+      },
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView,
     },
     {
       path: '/:catchAll(.*)',
@@ -51,6 +60,19 @@ const router = createRouter({
       component: NotFoundView,
     },
   ],
+})
+
+// global navigation before guard
+
+router.beforeEach((to, from) => {
+  const GlobalStore = inject('GlobalStore')
+  if (to.meta.requireAuth && !GlobalStore.userInfos.value.token) {
+    // route requires to be auth
+    return {
+      name: 'login',
+      query: { redirect: to.name },
+    }
+  }
 })
 
 export default router
