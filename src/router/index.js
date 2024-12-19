@@ -53,6 +53,19 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: ProfileView,
+      // add local navigation guard
+      beforeEnter: (to, from, next) => {
+        const GlobalStore = inject('GlobalStore')
+        if (GlobalStore?.userInfos.value.token) {
+          // if authenticated, go to next page
+          next()
+        } else {
+          next({
+            name: 'login',
+            query: { redirect: to.name },
+          })
+        }
+      },
     },
     {
       path: '/:catchAll(.*)',
